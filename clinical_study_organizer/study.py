@@ -1,9 +1,11 @@
 import random
+import csv
 
 
 class Study():
-    def __init__(self):
+    def __init__(self, attribute_names):
         self.patients = {}
+        self.attribute_names = attribute_names
 
     def add_patients(self, patients):
         for patient in patients:
@@ -45,6 +47,18 @@ def ensure_no_duplicate_noun(first, second, words):
     return second
 
 
-while True:
-    print(get_alias())
+def read_patient_list(file_name):
+    csv_data = []
 
+    with open(file_name) as csvfile:
+        read_csv = csv.reader(csvfile)
+        for row in read_csv:
+            csv_data.append(row)
+
+    return csv_data
+
+
+raw_list = read_patient_list('../data/sample_patient_list.csv')
+study = Study(raw_list[0])
+raw_list.pop(0)
+study.add_patients(raw_list)
