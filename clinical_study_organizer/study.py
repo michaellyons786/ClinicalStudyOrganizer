@@ -1,23 +1,20 @@
-import hashlib
+
 
 class Study():
     def __init__(self):
         pass
 
-def hash_id(identifier):
 
-    return hashlib.md5(identifier.encode())
-
-
-def to_decimal(hex_string):
-    return int(hex_string, 16)
-
-
+class Patient():
+    def __init__(self, last_name, first_name, id, data):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.id = id
+        self.data = data
 
 
-a = hash_id('nerd')
-a = a.hexdigest()
-print('Hex', a)
-b = int(a, 16)
-print('Dec', b)
-print(type(hex(b)))
+def anonymize(data):
+    alias = []
+
+
+
