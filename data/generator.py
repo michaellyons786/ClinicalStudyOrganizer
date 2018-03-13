@@ -18,16 +18,16 @@ def create_name(first_name, last_name):
 
 
 def get_id(id_list):
-    id = random.choice(range(1000000))
+    id = random.choice(range(10000))
 
     while id in id_list:
-        id = random.choice(range(1000000))
+        id = random.choice(range(10000))
 
         id_list.add(id)
 
     return id
 
-n = 500
+n = 20
 attribute_names = "last_name, first_name, id"
 first_names = open_CSV('CSV_Database_of_First_Names.csv')
 last_names = open_CSV('CSV_Database_of_Last_Names.csv')
