@@ -1,42 +1,13 @@
 import random
 import csv
 
+from clinical_study_organizer.database import Database
+from clinical_study_organizer.patient import Patient
+
 
 class Study:
     def __init__(self, attribute_names):
-        self.patients = {}
         self.attribute_names = attribute_names
-
-    def add_patients(self, patients):
-        for patient in patients:
-            self.add_patient(patient)
-
-    def add_patient(self, patient):
-        alias = self._ensure_no_duplicate_alias(get_alias())
-        self.patients[alias] = patient
-
-    def _ensure_no_duplicate_alias(self, alias):
-        while self.patients.get(alias, 'empty') != 'empty':
-            alias = get_alias()
-        return alias
-
-
-def get_alias():
-    file = open('../data/nounlist.txt')  # todo make dynamic
-    words = []
-    for line in file:
-        words.append(line)
-
-    first = random.choice(words).replace('\n', '')
-    second = ensure_no_duplicate_noun(first, first, words)
-
-    return first + '_' + second
-
-
-def ensure_no_duplicate_noun(first, second, words):
-    while second == first:
-        second = random.choice(words).replace('\n', '')
-    return second
 
 
 def read_patient_list(file_name):
@@ -52,5 +23,13 @@ def read_patient_list(file_name):
 if __name__ == "__main__":
     raw_list = read_patient_list('../data/sample_patient_list.csv')
     study = Study(raw_list[0])
-    raw_list.pop(0)
-    study.add_patients(raw_list)
+
+    database = Database(r"M:\sqlite\SQLiteStudio\databases\patients.db")
+
+    patient_row = raw_list[1]
+    patient_data = [patient_row[3], patient_row[4], patient_row[5]]
+    patient = Patient(patient_row[0], patient_row[1], patient_row[2], patient_data)
+
+    database.add_alias_patient(patient)
+
+

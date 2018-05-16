@@ -13,11 +13,31 @@ class Database:
     def _commit(self):
         self.connection.commit()
 
-    def close(self):
+    def _close(self):
         self.connection.close()
 
     def add_raw_patient(self, patient):
-        query = "INSERT INTO raw_data VALUES (" + patient.last_name + ", " + patient.first_name + ", " + patient.id + ")"
+
+        query = "INSERT INTO raw_data VALUES (\'" + patient.last_name + "\', \'" + patient.first_name + "\', \'" + patient.id + "\', \'" + patient.alias + "\')"
         self._execute_SQL(query)
+
+        self._commit()
+        self._close()
+
+    def add_alias_patient(self, patient):
+        data = patient.data
+        a = data[0]
+        b = data[1]
+        c = data[2]
+
+        data = a + ', ' + b + ', ' + c
+
+        query = "INSERT INTO raw_data VALUES (\'" + patient.alias + "\', \'" + data + "\')"
+
+        self._execute_SQL(query)
+
+        self._commit()
+        self._close()
+
 
 
