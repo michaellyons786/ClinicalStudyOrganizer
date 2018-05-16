@@ -2,7 +2,7 @@ import random
 import csv
 
 
-class Study():
+class Study:
     def __init__(self, attribute_names):
         self.patients = {}
         self.attribute_names = attribute_names
@@ -21,16 +21,8 @@ class Study():
         return alias
 
 
-class Patient():
-    def __init__(self, last_name, first_name, id, data):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.id = id
-        self.data = data
-
-
 def get_alias():
-    file = open('../data/nounlist.txt')
+    file = open('../data/nounlist.txt')  # todo make dynamic
     words = []
     for line in file:
         words.append(line)
@@ -57,8 +49,8 @@ def read_patient_list(file_name):
 
     return csv_data
 
-
-raw_list = read_patient_list('../data/sample_patient_list.csv')
-study = Study(raw_list[0])
-raw_list.pop(0)
-study.add_patients(raw_list)
+if __name__ == "__main__":
+    raw_list = read_patient_list('../data/sample_patient_list.csv')
+    study = Study(raw_list[0])
+    raw_list.pop(0)
+    study.add_patients(raw_list)

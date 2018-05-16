@@ -2,7 +2,7 @@ import sqlite3 as db
 
 
 # Written with help of https://docs.python.org/2/library/sqlite3.html
-class Database():
+class Database:
     def __init__(self, database_name):
         self.connection = db.connect(database_name)
         self.cursor = self.connection.cursor()
