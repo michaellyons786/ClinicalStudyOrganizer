@@ -7,6 +7,11 @@ class Database:
         self.connection = db.connect(database_name)
         self.cursor = self.connection.cursor()
 
+    def get_data(self, alias):
+        query = r"SELECT * FROM alias WHERE alias = {a}".format(a = alias)
+        self._execute_SQL(query)
+
+
     def _execute_SQL(self, command):
         self.cursor.execute(command)
 
