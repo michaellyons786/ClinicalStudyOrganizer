@@ -7,8 +7,8 @@ from clinical_study_organizer.patient import Patient
 
 
 class Study:
-    def __init__(self, attribute_dictionary):
-        self.attribute_names = attribute_dictionary
+    def __init__(self, attributes):
+        self.attribute_dictionary = self._parse_attributes(attributes)
         self.database = None
         self.initialized = False
 
@@ -24,12 +24,27 @@ class Study:
 
         self.initialized = True
 
+    def _parse_attributes(self, attributes):
+        DEMARCATION_INDEX = 3
+
+        attribute_dictionary = {}
+
+        essential_attributes = attributes[:DEMARCATION_INDEX]
+        patient_details = attributes[DEMARCATION_INDEX:]
+
+        for attribute in patient_details:
+            attribute = attribute.split(';')
+            attribute_dictionary[attribute[0]] = attribute[1]
+
+
+        return attribute_dictionary
+
 
 def read_patient_list(file_name):
     csv_data = []
 
     with open(file_name) as csvfile:
-        read_csv = csv.reader(csvfile)
+        read_csv = csv.reader(csvfile, skipinitialspace=True)
         for row in read_csv:
             csv_data.append(row)
 

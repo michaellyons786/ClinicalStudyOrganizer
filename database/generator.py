@@ -42,7 +42,7 @@ def get_eye_color():
 
 
 n = 20
-attribute_names = "id, last_name, first_name, (age, INT), (height(cm), INT), (eye_color, VARCHAR)"
+attribute_names = "id, last_name, first_name, age;INT, height(cm);INT, eye_color;VARCHAR"
 first_names = open_CSV('CSV_Database_of_First_Names.csv')
 last_names = open_CSV('CSV_Database_of_Last_Names.csv')
 
