@@ -14,7 +14,7 @@ def open_CSV(file):
 
 
 def create_name(first_name, last_name):
-    return random.choice(last_name)[0] + ', ' + random.choice(first_name)[0] + ', '
+    return random.choice(last_name)[0] + ', ' + random.choice(first_name)[0]
 
 
 def get_id(id_list):
@@ -27,8 +27,22 @@ def get_id(id_list):
 
     return id
 
+
+def get_age():
+    return str(random.randint(18, 40))
+
+
+def get_height():
+    return str(random.randint(145, 200))
+
+
+def get_eye_color():
+    colors = ['blue', 'green', 'gray', 'brown']
+    return random.choice(colors)
+
+
 n = 20
-attribute_names = "last_name, first_name, id"
+attribute_names = "id, last_name, first_name, age, height(cm), eye_color"
 first_names = open_CSV('CSV_Database_of_First_Names.csv')
 last_names = open_CSV('CSV_Database_of_Last_Names.csv')
 
@@ -40,7 +54,12 @@ file.write(attribute_names + '\n')
 
 for _ in range(n):
     id = str(get_id(id_list))
-    file.write(create_name(first_names, last_names) + id + '\n')
+    name = create_name(first_names, last_names)
+    age = get_age()
+    height = get_height()
+    eye_color = get_eye_color()
+
+    file.write(id + ", " + name + ", " + age + ", " + height + ", " + eye_color + '\n')
 
 file.close()
 

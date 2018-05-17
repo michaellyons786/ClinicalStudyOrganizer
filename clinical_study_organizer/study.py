@@ -7,8 +7,8 @@ from clinical_study_organizer.patient import Patient
 
 
 class Study:
-    def __init__(self, attribute_names):
-        self.attribute_names = attribute_names
+    def __init__(self, attribute_dictionary):
+        self.attribute_names = attribute_dictionary
         self.database = None
         self.initialized = False
 
