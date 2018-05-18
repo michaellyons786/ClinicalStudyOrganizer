@@ -14,28 +14,19 @@ class Study:
 
     def initialize(self):
         self.database = Database("../database/patients.db")
-
-        identity_table = r"CREATE TABLE identity (alias      VARCHAR REFERENCES alias (alias), " \
-                         r"id         INTEGER UNIQUE PRIMARY KEY, " \
-                         r"last_name  VARCHAR, " \
-                         r"first_name VARCHAR);"
-
-        self.database._execute_SQL(identity_table)
+        self.database.initialize(self.attribute_dictionary)
 
         self.initialized = True
 
     def _parse_attributes(self, attributes):
-        DEMARCATION_INDEX = 3
-
         attribute_dictionary = {}
 
-        essential_attributes = attributes[:DEMARCATION_INDEX]
-        patient_details = attributes[DEMARCATION_INDEX:]
-
-        for attribute in patient_details:
+        for attribute in attributes:
             attribute = attribute.split(';')
-            attribute_dictionary[attribute[0]] = attribute[1]
+            attribute_name = attribute[0]
+            attribute_type = attribute[1]
 
+            attribute_dictionary[attribute_name] = attribute_type
 
         return attribute_dictionary
 

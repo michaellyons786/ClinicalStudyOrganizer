@@ -12,6 +12,32 @@ class Database:
         query = r"'SELECT * FROM alias WHERE alias = {a}'".format(a = alias)
         self._execute_SQL(query)
 
+    def initialize(self, attribute_dictionary):
+        attribute_string = self._get_attribute_string(attribute_dictionary)
+
+        identity_table = "CREATE TABLE identity (" \
+                         "alias      VARCHAR REFERENCES alias (alias),\n" \
+                         "id         INTEGER UNIQUE PRIMARY KEY,\n" + \
+                         attribute_string + \
+                         ");"
+
+        print(identity_table)
+
+        self._execute_SQL(identity_table)
+
+    def _get_attribute_string(self, attribute_dictionary):
+        attribute_string_list = []
+
+        for attribute_name in (attribute for attribute in attribute_dictionary if attribute != "id"):
+            attribute_type = attribute_dictionary[attribute_name]
+            attribute_string = attribute_name + " " + attribute_type + ",\n"
+
+            attribute_string_list.append(attribute_string)
+
+        attribute_string_list[len(attribute_string_list) - 1] = attribute_string_list[len(attribute_string_list) - 1].replace(",", "")
+
+        return "".join(attribute_string_list)
+
     def _open(self):
         self.connection = db.connect(self.database_name)
         self.cursor = self.connection.cursor()
