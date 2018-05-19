@@ -17,18 +17,26 @@ class Database:
 
         identity_table = "CREATE TABLE identity (" \
                          "alias      VARCHAR REFERENCES alias (alias),\n" \
-                         "id         INTEGER UNIQUE PRIMARY KEY,\n" + \
-                         attribute_string + \
+                         "id         INT UNIQUE PRIMARY KEY,\n" \
+                         "last_name         VARCHAR,\n" \
+                         "first_name         VARCHAR" \
                          ");"
 
-        print(identity_table)
+        attribute_table = "CREATE TABLE attributes (\n" \
+                          "alias    VARCHAR PRIMARY KEY UNIQUE,\n" + \
+                          attribute_string + \
+                          ");"
+
+        print(attribute_table)
 
         self._execute_SQL(identity_table)
+        self._execute_SQL(attribute_table)
 
-    def _get_attribute_string(self, attribute_dictionary):
+    @staticmethod
+    def _get_attribute_string(attribute_dictionary):
         attribute_string_list = []
 
-        for attribute_name in (attribute for attribute in attribute_dictionary if attribute != "id"):
+        for attribute_name in (attribute for attribute in attribute_dictionary if attribute != "id" and attribute != "last_name" and attribute != "first_name"):
             attribute_type = attribute_dictionary[attribute_name]
             attribute_string = attribute_name + " " + attribute_type + ",\n"
 
@@ -38,14 +46,14 @@ class Database:
 
         return "".join(attribute_string_list)
 
-    def _open(self):
-        self.connection = db.connect(self.database_name)
-        self.cursor = self.connection.cursor()
-
     def _execute_SQL(self, command):
         self._open()
         self.cursor.execute(command)
         self._close()
+
+    def _open(self):
+        self.connection = db.connect(self.database_name)
+        self.cursor = self.connection.cursor()
 
     def _close(self):
         self.connection.commit()
