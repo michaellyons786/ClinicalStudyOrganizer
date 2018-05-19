@@ -14,6 +14,7 @@ class Study:
 
     def initialize(self):
         self.database = Database("../database/patients.db")
+        self.database.delete_tables() # todo delete
         self.database.initialize(self.attribute_dictionary)
 
         self.initialized = True

@@ -13,7 +13,7 @@ class Database:
         self._execute_SQL(query)
 
     def initialize(self, attribute_dictionary):
-        attribute_string = self._get_attribute_string(attribute_dictionary)
+        attribute_string = self._get_attribute_table(attribute_dictionary)
 
         identity_table = "CREATE TABLE identity (" \
                          "alias      VARCHAR REFERENCES alias (alias),\n" \
@@ -27,28 +27,16 @@ class Database:
                           attribute_string + \
                           ");"
 
-        print(attribute_table)
+        self._execute_SQL([identity_table, attribute_table])
 
-        self._execute_SQL(identity_table)
-        self._execute_SQL(attribute_table)
+    def delete_tables(self):
+        self._execute_SQL(["DROP TABLE attributes;", "DROP TABLE identity;"])
 
-    @staticmethod
-    def _get_attribute_string(attribute_dictionary):
-        attribute_string_list = []
 
-        for attribute_name in (attribute for attribute in attribute_dictionary if attribute != "id" and attribute != "last_name" and attribute != "first_name"):
-            attribute_type = attribute_dictionary[attribute_name]
-            attribute_string = attribute_name + " " + attribute_type + ",\n"
-
-            attribute_string_list.append(attribute_string)
-
-        attribute_string_list[len(attribute_string_list) - 1] = attribute_string_list[len(attribute_string_list) - 1].replace(",", "")
-
-        return "".join(attribute_string_list)
-
-    def _execute_SQL(self, command):
+    def _execute_SQL(self, commands):
         self._open()
-        self.cursor.execute(command)
+        for command in commands:
+            self.cursor.execute(command)
         self._close()
 
     def _open(self):
@@ -59,26 +47,54 @@ class Database:
         self.connection.commit()
         self.connection.close()
 
-    def add_raw_patient(self, patient):
+    def add_alias_data(self, patient, attribute_dictionary):
+        alias = "\'" + patient.alias + "\', "
+        data = patient.data
+        data_string = self._construct_patient_data(data)
 
-        query = "INSERT INTO raw_data VALUES (\'" + patient.last_name + "\', \'" + patient.first_name + "\', \'" + patient.id + "\', \'" + patient.alias + "\')"
+        query = "INSERT INTO attributes VALUES (" + \
+        alias + \
+        data_string + \
+        ");"
+
         self._execute_SQL(query)
 
-        self._close()
-
-    def add_alias_patient(self, patient):
-        data = patient.data
-        a = data[0]
-        b = data[1]
-        c = data[2]
-
-        data = a + ', ' + b + ', ' + c
+    def add_identity_data(self, patient, attribute_dictionary):
+        query = "INSERT INTO attributes VALUES (\'" + patient.last_name + "\', \'" + patient.first_name + "\', \'" + patient.id + "\', \'" + patient.alias + "\')"
 
         query = "INSERT INTO raw_data VALUES (\'" + patient.alias + "\', \'" + data + "\')"
 
         self._execute_SQL(query)
+        
+    @staticmethod
+    def _construct_patient_data(data):
+        patient_data = []
+        
+        for value in data:
+            patient_data.append("\'" + str(value) + "\', ")
 
-        self._close()
+        remove_last_comma(patient_data)
+        
+        return "".join(patient_data)
+
+    @staticmethod
+    def _get_attribute_table(attribute_dictionary):
+        attribute_string_list = []
+
+        for attribute_name in (attribute for attribute in attribute_dictionary if
+                               attribute != "id" and attribute != "last_name" and attribute != "first_name"):
+            attribute_type = attribute_dictionary[attribute_name]
+            attribute_string = attribute_name + " " + attribute_type + ",\n"
+
+            attribute_string_list.append(attribute_string)
+
+        remove_last_comma(attribute_string_list)
+
+        return "".join(attribute_string_list)
+
+
+def remove_last_comma(string_list):
+    string_list[len(string_list) - 1] = string_list[len(string_list) - 1].replace(",", "")
 
 
 
