@@ -1,64 +1,50 @@
 import random
 import csv
+import sqlite3 as db
+
+from clinical_study_organizer.database import Database
+from clinical_study_organizer.patient import Patient
 
 
-class Study():
-    def __init__(self, attribute_names):
-        self.patients = {}
-        self.attribute_names = attribute_names
+class Study:
+    def __init__(self, attributes):
+        self.attribute_dictionary = self._parse_attributes(attributes)
+        self.database = None
+        self.initialized = False
 
-    def add_patients(self, patients):
-        for patient in patients:
-            self.add_patient(patient)
+    def initialize(self):
+        self.database = Database("../database/patients.db")
+        self.database.initialize(self.attribute_dictionary)
 
-    def add_patient(self, patient):
-        alias = self._ensure_no_duplicate_alias(get_alias())
-        self.patients[alias] = patient
+        self.initialized = True
 
-    def _ensure_no_duplicate_alias(self, alias):
-        while self.patients.get(alias, 'empty') != 'empty':
-            alias = get_alias()
-        return alias
+    def _parse_attributes(self, attributes):
+        attribute_dictionary = {}
 
+        for attribute in attributes:
+            attribute = attribute.split(';')
+            attribute_name = attribute[0]
+            attribute_type = attribute[1]
 
-class Patient():
-    def __init__(self, last_name, first_name, id, data):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.id = id
-        self.data = data
+            attribute_dictionary[attribute_name] = attribute_type
 
-
-def get_alias():
-    file = open('../data/nounlist.txt')
-    words = []
-    for line in file:
-        words.append(line)
-
-    first = random.choice(words).replace('\n', '')
-    second = ensure_no_duplicate_noun(first, first, words)
-
-    return first + '_' + second
-
-
-def ensure_no_duplicate_noun(first, second, words):
-    while second == first:
-        second = random.choice(words).replace('\n', '')
-    return second
+        return attribute_dictionary
 
 
 def read_patient_list(file_name):
     csv_data = []
 
     with open(file_name) as csvfile:
-        read_csv = csv.reader(csvfile)
+        read_csv = csv.reader(csvfile, skipinitialspace=True)
         for row in read_csv:
             csv_data.append(row)
 
     return csv_data
 
 
-raw_list = read_patient_list('../data/sample_patient_list.csv')
-study = Study(raw_list[0])
-raw_list.pop(0)
-study.add_patients(raw_list)
+if __name__ == "__main__":
+    raw_list = read_patient_list('../database/sample_patient_list.csv')
+    study = Study(raw_list[0])
+    study.initialize()
+
+
