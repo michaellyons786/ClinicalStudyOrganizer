@@ -47,7 +47,7 @@ class Database:
         self.connection.commit()
         self.connection.close()
 
-    def add_alias_data(self, patient, attribute_dictionary):
+    def add_alias_data(self, patient):
         alias = "\'" + patient.alias + "\', "
         data = patient.data
         data_string = self._construct_patient_data(data)
@@ -57,14 +57,12 @@ class Database:
         data_string + \
         ");"
 
-        self._execute_SQL(query)
+        self._execute_SQL([query])
 
-    def add_identity_data(self, patient, attribute_dictionary):
-        query = "INSERT INTO attributes VALUES (\'" + patient.last_name + "\', \'" + patient.first_name + "\', \'" + patient.id + "\', \'" + patient.alias + "\')"
+    def add_identity_data(self, patient):
+        query = "INSERT INTO identity VALUES (\'" + patient.alias + "\', \'" + patient.id + "\', \'" + patient.last_name + "\', \'" + patient.first_name + "\')"
 
-        query = "INSERT INTO raw_data VALUES (\'" + patient.alias + "\', \'" + data + "\')"
-
-        self._execute_SQL(query)
+        self._execute_SQL([query])
         
     @staticmethod
     def _construct_patient_data(data):
