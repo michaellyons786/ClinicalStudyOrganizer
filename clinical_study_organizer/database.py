@@ -82,6 +82,10 @@ class Database:
         query = "SELECT * FROM attributes WHERE alias = \'{a}\';".format(a=alias)
         return self._query_database(query)
 
+    def get_identity(self, alias):
+        query = "SELECT * FROM identity WHERE alias = \'{a}\';".format(a=alias)
+        return self._query_database(query)
+
     def get_aliases(self):
         query = "SELECT alias FROM attributes;"
         return self._query_database(query)

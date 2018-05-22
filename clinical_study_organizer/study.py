@@ -12,6 +12,7 @@ class Study:
         self.attribute_dictionary = self._parse_attributes(attributes)
         self.database = None
         self.initialized = False
+        self.anonymized = True
 
     def initialize(self):
         self.database = Database("../database/patients.db")
@@ -26,6 +27,9 @@ class Study:
 
     def get_data(self, alias):
         return self.database.get_data(alias)
+
+    def get_identity(self, alias):
+        return self.database.get_identity(alias)
 
     def get_aliases(self):
         return self.database.get_aliases()
