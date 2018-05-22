@@ -8,10 +8,6 @@ class Database:
         self.connection = None
         self.cursor = None
 
-    def get_data(self, alias):
-        query = r"'SELECT * FROM alias WHERE alias = {a}'".format(a = alias)
-        self._execute_SQL(query)
-
     def initialize(self, attribute_dictionary):
         attribute_string = self._get_attribute_table(attribute_dictionary)
 
@@ -38,6 +34,15 @@ class Database:
         for command in commands:
             self.cursor.execute(command)
         self._close()
+
+    def _query_database(self, query):
+        self._open()
+        self.cursor.execute(query)
+        info = self.cursor.fetchall()
+        self._close()
+
+        return info
+
 
     def _open(self):
         self.connection = db.connect(self.database_name)
@@ -72,6 +77,14 @@ class Database:
             queries.append(query)
 
         self._execute_SQL(queries)
+
+    def get_data(self, alias):
+        query = "SELECT * FROM attributes WHERE alias = \'{a}\';".format(a=alias)
+        return self._query_database(query)
+
+    def get_aliases(self):
+        query = "SELECT alias FROM attributes;"
+        return self._query_database(query)
         
     @staticmethod
     def _construct_patient_data(data):
