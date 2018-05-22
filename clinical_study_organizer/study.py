@@ -14,11 +14,23 @@ class Study:
 
     def initialize(self):
         self.database = Database("../database/patients.db")
+        self.database.delete_tables()  # todo delete
         self.database.initialize(self.attribute_dictionary)
 
         self.initialized = True
 
-    def _parse_attributes(self, attributes):
+    def add_patients(self, patients):
+        self.database.add_patients_attributes(patients)
+        self.database.add_patients_identities(patients)
+
+    def get_data(self, alias):
+        return self.database.get_data(alias)
+
+    def get_aliases(self):
+        return self.database.get_aliases()
+
+    @staticmethod
+    def _parse_attributes(attributes):
         attribute_dictionary = {}
 
         for attribute in attributes:
@@ -39,12 +51,35 @@ def read_patient_list(file_name):
         for row in read_csv:
             csv_data.append(row)
 
-    return csv_data
+    attributes = csv_data[0]
+    data = csv_data[1:]
+
+    return attributes, data
+
+
+def construct_patient_list(patients):
+    patient_list = []
+
+    for row in patients:
+        id = row[0]
+        last_name = row[1]
+        first_name = row[2]
+        data = row[3:]
+        patient = Patient(id, last_name, first_name, data)
+        patient_list.append(patient)
+
+    return patient_list
 
 
 if __name__ == "__main__":
-    raw_list = read_patient_list('../database/sample_patient_list.csv')
-    study = Study(raw_list[0])
+    attributes, data = read_patient_list('../database/sample_patient_list.csv')
+    study = Study(attributes)
     study.initialize()
+
+    patients = construct_patient_list(data)
+    study.add_patients(patients)
+    aliases = study.get_aliases()
+    info = study.get_data(aliases[0][0])
+    print(info)
 
 
