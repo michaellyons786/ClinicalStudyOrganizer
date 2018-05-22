@@ -19,14 +19,12 @@ class Study:
 
         self.initialized = True
 
-    def add_patient(self, patient):
-        self.database.add_alias_data(patient)
-        self.database.add_identity_data(patient)
+    def add_patient(self, patients):
+        self.database.add_patients_attributes(patients)
+        self.database.add_patients_identities(patients)
 
-    def add_patients(self, patients):
-        pass
-
-    def _parse_attributes(self, attributes):
+    @staticmethod
+    def _parse_attributes(attributes):
         attribute_dictionary = {}
 
         for attribute in attributes:
@@ -73,7 +71,7 @@ if __name__ == "__main__":
     study.initialize()
 
     patients = construct_patient_list(data)
-    study.add_patient(patients[0])
+    study.add_patient(patients)
 
 
 

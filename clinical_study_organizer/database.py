@@ -47,22 +47,31 @@ class Database:
         self.connection.commit()
         self.connection.close()
 
-    def add_alias_data(self, patient):
-        alias = "\'" + patient.alias + "\', "
-        data = patient.data
-        data_string = self._construct_patient_data(data)
+    def add_patients_attributes(self, patients):
+        queries = []
 
-        query = "INSERT INTO attributes VALUES (" + \
-        alias + \
-        data_string + \
-        ");"
+        for patient in patients:
+            alias = "\'" + patient.alias + "\', "
+            data = patient.data
+            data_string = self._construct_patient_data(data)
 
-        self._execute_SQL([query])
+            query = "INSERT INTO attributes VALUES (" + \
+            alias + \
+            data_string + \
+            ");"
 
-    def add_identity_data(self, patient):
-        query = "INSERT INTO identity VALUES (\'" + patient.alias + "\', \'" + patient.id + "\', \'" + patient.last_name + "\', \'" + patient.first_name + "\')"
+            queries.append(query)
 
-        self._execute_SQL([query])
+        self._execute_SQL(queries)
+
+    def add_patients_identities(self, patients):
+        queries = []
+
+        for patient in patients:
+            query = "INSERT INTO identity VALUES (\'" + patient.alias + "\', \'" + patient.id + "\', \'" + patient.last_name + "\', \'" + patient.first_name + "\')"
+            queries.append(query)
+
+        self._execute_SQL(queries)
         
     @staticmethod
     def _construct_patient_data(data):
