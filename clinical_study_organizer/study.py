@@ -1,6 +1,7 @@
 import random
 import csv
 import sqlite3 as db
+import pickle
 
 from clinical_study_organizer.database import Database
 from clinical_study_organizer.patient import Patient
@@ -41,6 +42,13 @@ class Study:
             attribute_dictionary[attribute_name] = attribute_type
 
         return attribute_dictionary
+
+    @staticmethod
+    def load(file_name):
+        return pickle.load(open(file_name, 'rb'))
+
+    def save(self, file_name):
+        pickle.dump(self, open(file_name, 'wb'))
 
 
 def read_patient_list(file_name):
