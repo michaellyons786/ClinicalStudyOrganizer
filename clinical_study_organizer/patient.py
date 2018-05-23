@@ -26,3 +26,6 @@ class Patient:
         while second_word == first_word:
             second_word = random.choice(words).replace('\n', '')
         return second_word
+
+    def __repr__(self):
+        return self.id + " " + self.first_name + " " + self.last_name
