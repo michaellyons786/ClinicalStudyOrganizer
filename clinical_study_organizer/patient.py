@@ -16,16 +16,17 @@ class Patient:
             words.append(line)
 
         first_word = random.choice(words).replace('\n', '')
-        second_word = self._ensure_no_duplicate_noun(first_word, words)
+        second_word = ensure_no_duplicate_noun(first_word, words)
 
         return first_word + '_' + second_word
 
-    def _ensure_no_duplicate_noun(self, first_word, words):
-        second_word = random.choice(words).replace('\n', '')
-
-        while second_word == first_word:
-            second_word = random.choice(words).replace('\n', '')
-        return second_word
-
     def __repr__(self):
         return self.id + " " + self.first_name + " " + self.last_name
+
+
+def ensure_no_duplicate_noun(first_word, words):
+    second_word = random.choice(words).replace('\n', '')
+
+    while second_word == first_word:
+        second_word = random.choice(words).replace('\n', '')
+    return second_word

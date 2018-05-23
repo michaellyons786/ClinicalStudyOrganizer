@@ -89,6 +89,10 @@ class Database:
     def get_aliases(self):
         query = "SELECT alias FROM attributes;"
         return self._query_database(query)
+
+    def get_attribute(self, attribute):
+        query = "SELECT alias, {a} FROM attributes;".format(a=attribute)
+        return self._query_database(query)
         
     @staticmethod
     def _construct_patient_data(data):
