@@ -3,6 +3,7 @@ import csv
 import sqlite3 as db
 import pickle
 
+from clinical_study_organizer.clinical_statistics import *
 from clinical_study_organizer.database import Database
 from clinical_study_organizer.patient import Patient
 
@@ -33,6 +34,9 @@ class Study:
 
     def get_aliases(self):
         return self.database.get_aliases()
+
+    def get_attribute(self, attribute):
+        return self.database.get_attribute(attribute)
 
     @staticmethod
     def _parse_attributes(attributes):
@@ -90,8 +94,7 @@ if __name__ == "__main__":
 
     patients = construct_patient_list(data)
     study.add_patients(patients)
-    aliases = study.get_aliases()
-    info = study.get_data(aliases[0][0])
-    print(info)
+    info = study.get_attribute("age")
 
+    print(mean(info))
 
