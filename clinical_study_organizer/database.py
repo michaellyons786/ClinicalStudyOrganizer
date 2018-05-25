@@ -2,6 +2,9 @@ import sqlite3 as db
 
 
 # Written with help of https://docs.python.org/2/library/sqlite3.html
+from clinical_study_organizer.containers.query_result import Query_Result
+
+
 class Database:
     def __init__(self, database_name):
         self.database_name = database_name
@@ -9,7 +12,7 @@ class Database:
         self.cursor = None
 
     def initialize(self, attribute_dictionary):
-        attribute_string = self._get_attribute_table(attribute_dictionary)
+        attribute_string = self._construct_attribute_table(attribute_dictionary)
 
         identity_table = "CREATE TABLE identity (" \
                          "alias      VARCHAR REFERENCES alias (alias),\n" \
@@ -58,7 +61,7 @@ class Database:
         for patient in patients:
             alias = "\'" + patient.alias + "\', "
             data = patient.data
-            data_string = self._construct_patient_data(data)
+            data_string = self._construct_patient_attributes(data)
 
             query = "INSERT INTO attributes VALUES (" + \
             alias + \
@@ -86,16 +89,17 @@ class Database:
         query = "SELECT * FROM identity WHERE alias = \'{a}\';".format(a=alias)
         return self._query_database(query)
 
-    def get_aliases(self):
+    def get_all_aliases(self):
         query = "SELECT alias FROM attributes;"
         return self._query_database(query)
 
-    def get_attribute(self, attribute):
-        query = "SELECT alias, {a} FROM attributes;".format(a=attribute)
-        return self._query_database(query)
+    def get_all_attribute_values(self, attributes):
+        query = "SELECT alias, " + self._construct_attributes_select(attributes) + " FROM attributes;"
+
+        return Query_Result(self._query_database(query), attributes)
         
     @staticmethod
-    def _construct_patient_data(data):
+    def _construct_patient_attributes(data):
         patient_data = []
         
         for value in data:
@@ -106,7 +110,7 @@ class Database:
         return "".join(patient_data)
 
     @staticmethod
-    def _get_attribute_table(attribute_dictionary):
+    def _construct_attribute_table(attribute_dictionary):
         attribute_string_list = []
 
         for attribute_name in (attribute for attribute in attribute_dictionary if
@@ -119,6 +123,18 @@ class Database:
         remove_last_comma(attribute_string_list)
 
         return "".join(attribute_string_list)
+
+    @staticmethod
+    def _construct_attributes_select(attributes):
+        query = []
+
+        for attribute in attributes:
+            line = attribute + ", "
+            query.append(line)
+
+        remove_last_comma(query)
+
+        return "".join(query)
 
 
 def remove_last_comma(string_list):
