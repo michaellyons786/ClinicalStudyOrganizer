@@ -1,11 +1,9 @@
-import random
 import csv
-import sqlite3 as db
 import pickle
 
 from clinical_study_organizer.clinical_statistics import *
 from clinical_study_organizer.database import Database
-from clinical_study_organizer.patient import Patient
+from clinical_study_organizer.containers.patient import Patient
 
 
 class Study:
@@ -32,11 +30,11 @@ class Study:
     def get_identity(self, alias):
         return self.database.get_identity(alias)
 
-    def get_aliases(self):
-        return self.database.get_aliases()
+    def get_all_aliases(self):
+        return self.database.get_all_aliases()
 
-    def get_attribute(self, attribute):
-        return self.database.get_attribute(attribute)
+    def get_all_attribute_values(self, attributes):
+        return self.database.get_all_attribute_values(attributes)
 
     @staticmethod
     def _parse_attributes(attributes):
@@ -94,7 +92,7 @@ if __name__ == "__main__":
 
     patients = construct_patient_list(data)
     study.add_patients(patients)
-    info = study.get_attribute("age")
+    info = study.get_all_attribute_values(["age", "eye_color"])
 
     print(mean(info))
 
