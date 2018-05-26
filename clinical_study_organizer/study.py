@@ -28,6 +28,8 @@ class Study:
         return self.database.get_data(alias)
 
     def get_identity(self, alias):
+        self.anonymized = False
+
         return self.database.get_identity(alias)
 
     def get_all_aliases(self):
