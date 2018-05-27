@@ -12,5 +12,6 @@ setup(name='clinical study organizer',
       py_modules=['clinical_statistics, database, study, containers/patient, containers/query, containers/query_result'],
       author_email='mylonsru@gmail.com',
       author="Michael Lyons",
+      packages=["clinical_study_organizer"],
       package_dir = {'': 'src'}
       )
