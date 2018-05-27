@@ -10,7 +10,7 @@ class Patient:
         self.alias = self.get_alias()
 
     def get_alias(self):
-        file = open('../../database/nounlist.txt')  # todo make dynamic
+        file = open('../database/nounlist.txt')  # todo make dynamic
         words = []
         for line in file:
             words.append(line)
