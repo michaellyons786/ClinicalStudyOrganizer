@@ -1,4 +1,4 @@
-from src.clinical_study_organizer import read_patient_list, construct_patient_list, Study
+from src.clinical_study_organizer.study import *
 
 
 def test_read_patient_list():
