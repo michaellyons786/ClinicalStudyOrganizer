@@ -1,9 +1,8 @@
 import csv
 import pickle
 
-from clinical_study_organizer.clinical_statistics import *
-from clinical_study_organizer.database import Database
-from clinical_study_organizer.containers.patient import Patient
+from src.clinical_study_organizer import database as db
+from src.clinical_study_organizer.containers import patient as p
 
 
 class Study:
@@ -14,7 +13,7 @@ class Study:
         self.anonymized = True
 
     def initialize(self):
-        self.database = Database("../database/patients.db")
+        self.database = db.Database("../../database/patients.db")
         self.database.delete_tables()  # todo delete
         self.database.initialize(self.attribute_dictionary)
 
@@ -79,14 +78,15 @@ def construct_patient_list(patients):
         last_name = row[1]
         first_name = row[2]
         data = row[3:]
-        patient = Patient(id, last_name, first_name, data)
+        patient = p.Patient(id, last_name, first_name, data)
         patient_list.append(patient)
+
 
     return patient_list
 
 
 if __name__ == "__main__":
-    attributes, data = read_patient_list('../database/sample_patient_list.csv')
+    attributes, data = read_patient_list('../../database/sample_patient_list.csv')
     study = Study(attributes)
     study.initialize()
 
@@ -94,5 +94,5 @@ if __name__ == "__main__":
     study.add_patients(patients)
     info = study.get_all_attribute_values(["age", "eye_color"])
 
-    print(mean(info))
+    # print(mean(info))
 
