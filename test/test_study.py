@@ -1,28 +1,40 @@
-from clinical_study_organizer.study import read_patient_list, construct_patient_list, Study
-
+from src.clinical_study_organizer.study import *
+import os
 
 def test_read_patient_list():
-    test_list = "../database/sample_patient_list.csv"
-    attributes, data = read_patient_list(test_list)
+    attributes, data = get_attributes()
 
     assert("Kolbe" in data[0])
     assert("Maycock" in data[19])
     assert("id;INT" in attributes[0])
     assert("eye_color;VARCHAR" in attributes[5])
 
+
 def test_construct_patient_list():
-    test_list = "../database/sample_patient_list.csv"
+    test_list = "test_resources/sample_patient_list.csv"
     attributes, data = read_patient_list(test_list)
 
-    patients = construct_patient_list(data)
+    noun_list = "test_resources/nounlist.txt"
+    patients = construct_patient_list(data, noun_list)
 
     assert (patients[0].first_name == "Cathi")
     assert (patients[19].first_name == "Oretha")
     assert (patients[0].id == '7698')
     assert (patients[19].id == '5782')
 
+
 def test_study():
     test_list = "../database/sample_patient_list.csv"
     attributes, data = read_patient_list(test_list)
 
     study = Study(attributes)
+
+
+def get_attributes():
+    here = os.path.abspath(os.path.dirname(__file__))
+    print("[DEBUG MI] " + here)
+    print(os.listdir(here))
+
+    test_list = here + "test_resources/sample_patient_list.csv"
+    attributes, data = read_patient_list(test_list)
+    return attributes, data
