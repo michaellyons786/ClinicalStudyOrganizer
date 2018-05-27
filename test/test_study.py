@@ -31,7 +31,7 @@ def test_study():
     attributes, data = get_attributes()
     patients = get_patients(data)
 
-    database_location = "test_resources/test.db"
+    database_location = get_database_location()
 
     study = Study(attributes, database_location)
     study.initialize()
@@ -40,6 +40,12 @@ def test_study():
     info = study.get_all_attribute_values(["age", "eye_color"])
 
     study.delete_tables()
+
+
+def get_database_location():
+    here = os.path.abspath(os.path.dirname(__file__))
+    database_location = here + "/test_resources/test.db"
+    return database_location
 
 
 def get_attributes():
