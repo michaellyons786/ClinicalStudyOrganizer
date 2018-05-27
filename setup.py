@@ -12,5 +12,5 @@ setup(name='clinical study organizer',
       py_modules=['foo'],
       author_email='mylonsru@gmail.com',
       author="Michael Lyons",
-      packages=['src/clinical_study_organizer'],
+      package_dir = {'': 'src'}
       )
