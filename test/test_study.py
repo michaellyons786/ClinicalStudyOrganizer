@@ -12,8 +12,10 @@ def test_read_patient_list():
 
 def test_construct_patient_list():
     attributes, data = get_attributes()
+    here = os.path.abspath(os.path.dirname(__file__))
 
-    noun_list = "/test_resources/nounlist.txt"
+
+    noun_list = here + "/test_resources/nounlist.txt"
     patients = construct_patient_list(data, noun_list)
 
     assert (patients[0].first_name == "Cathi")
@@ -23,8 +25,7 @@ def test_construct_patient_list():
 
 
 def test_study():
-    test_list = "../database/sample_patient_list.csv"
-    attributes, data = read_patient_list(test_list)
+    attributes, data = get_attributes()
 
     study = Study(attributes)
 
