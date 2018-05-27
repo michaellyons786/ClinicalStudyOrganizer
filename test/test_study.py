@@ -30,6 +30,6 @@ def test_study():
 
 def get_attributes():
 
-    test_list =  "/test_resources/sample_patient_list.csv"
+    test_list =  "./test_resources/sample_patient_list.csv"
     attributes, data = read_patient_list(test_list)
     return attributes, data
