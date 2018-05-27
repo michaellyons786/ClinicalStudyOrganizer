@@ -1,5 +1,5 @@
 from src.clinical_study_organizer.study import *
-from os import path
+import os
 
 def test_read_patient_list():
     attributes, data = get_attributes()
@@ -31,8 +31,9 @@ def test_study():
 
 
 def get_attributes():
-    here = path.abspath(path.dirname(__file__))
+    here = os.path.abspath(os.path.dirname(__file__))
     print("[DEBUG MI] " + here)
+    print(os.listdir(here))
 
     test_list = here + "test_resources/sample_patient_list.csv"
     attributes, data = read_patient_list(test_list)
