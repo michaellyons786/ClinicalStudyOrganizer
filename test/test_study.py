@@ -11,8 +11,7 @@ def test_read_patient_list():
 
 
 def test_construct_patient_list():
-    test_list = "test_resources/sample_patient_list.csv"
-    attributes, data = read_patient_list(test_list)
+    attributes, data = get_attributes()
 
     noun_list = "test_resources/nounlist.txt"
     patients = construct_patient_list(data, noun_list)
