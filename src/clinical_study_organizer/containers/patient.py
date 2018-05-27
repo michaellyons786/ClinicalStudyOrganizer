@@ -2,15 +2,15 @@ import random
 
 
 class Patient:
-    def __init__(self, id, last_name, first_name, data):
+    def __init__(self, id, last_name, first_name, data, noun_list):
         self.first_name = first_name
         self.last_name = last_name
         self.id = id
         self.data = data
-        self.alias = self.get_alias()
+        self.alias = self.get_alias(noun_list)
 
-    def get_alias(self):
-        file = open('../database/nounlist.txt')  # todo make dynamic
+    def get_alias(self, noun_list):
+        file = open(noun_list)  # todo make dynamic
         words = []
         for line in file:
             words.append(line)

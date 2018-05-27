@@ -70,7 +70,7 @@ def read_patient_list(file_name):
     return attributes, data
 
 
-def construct_patient_list(patients):
+def construct_patient_list(patients, noun_list):
     patient_list = []
 
     for row in patients:
@@ -78,7 +78,7 @@ def construct_patient_list(patients):
         last_name = row[1]
         first_name = row[2]
         data = row[3:]
-        patient = p.Patient(id, last_name, first_name, data)
+        patient = p.Patient(id, last_name, first_name, data, noun_list)
         patient_list.append(patient)
 
 
