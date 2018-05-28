@@ -3,3 +3,8 @@
 
 ## Goal
 To abstract away the more difficult aspects of designing studies (especially randomization) away from researchers to improve science. Instead of hard to comprehend strings of random numbers and letters, my program combines two random words from a noun list to create memorable (and sometimes amusing) aliases that can be used to identify patients anyomyously.
+
+For instance:
+
+![identity](https://github.com/michaellyons786/ClinicalStudyOrganizer/blob/master/research/identity_table.png?raw=true)
+![alias](https://github.com/michaellyons786/ClinicalStudyOrganizer/blob/master/research/alias_table.png?raw=true)
