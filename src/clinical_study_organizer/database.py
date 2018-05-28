@@ -42,6 +42,9 @@ class Database:
 
         return qrr.Query_Result(self._query_database(query_string), attributes)
 
+    def is_initialized(self):
+        return self._query_database("SELECT name FROM sqlite_master WHERE type='table' AND name='identity';")
+
     def _execute_SQL(self, commands):
         self._open()
         for command in commands:

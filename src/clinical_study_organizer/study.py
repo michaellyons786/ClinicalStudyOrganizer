@@ -15,6 +15,9 @@ class Study:
 
     def initialize(self):
         self.database = db.Database(self.database_location)
+        if len(self.database.is_initialized()) != 0: # todo fix
+            self.delete_tables()
+
         self.database.initialize(self.attribute_dictionary)
         self.initialized = True
 
