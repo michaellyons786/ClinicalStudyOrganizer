@@ -31,7 +31,20 @@ class Study:
     def delete_tables(self):
         self.database.delete_tables()
 
+    def get_alias(self, id):
+        if type(id) != 'str':
+            id = str(id)
+
+        return self.database.get_alias(id)
+
+    def get_identity_attributes(self, id):
+        if type(id) != 'str':
+            id = str(id)
+
+        return self.database.get_identity_attributes(id)
+
     def get_identity(self, alias):
+        self.anonymized = False
         return self.database.get_identity(alias)
 
     def get_all_aliases(self):

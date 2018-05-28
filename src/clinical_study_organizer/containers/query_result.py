@@ -14,3 +14,6 @@ class Query_Result:
 
             self.key_attributes[alias] = attributes
 
+    def get_attributes(self, alias):
+        return self.key_attributes[alias]
+

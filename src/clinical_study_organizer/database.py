@@ -33,6 +33,14 @@ class Database:
         query = "SELECT * FROM identity WHERE alias = \'{a}\';".format(a=alias)
         return self._query_database(query)
 
+    def get_alias(self, id):
+        query = "SELECT alias FROM identity WHERE id = {i};".format(i=id)
+        return self._query_database(query)
+
+    def get_identity_attributes(self, id):
+        alias = self.get_alias(id)[0][0] # todo fix
+        return self.get_data(alias)
+
     def get_all_aliases(self):
         query = "SELECT alias FROM attributes;"
         return self._query_database(query)
