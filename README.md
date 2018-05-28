@@ -8,3 +8,7 @@ For instance:
 
 ![identity](https://github.com/michaellyons786/ClinicalStudyOrganizer/blob/master/research/identity_table.png?raw=true)
 ![alias](https://github.com/michaellyons786/ClinicalStudyOrganizer/blob/master/research/alias_table.png?raw=true)
+
+As you can see, the alias is the foreign key that could be used to join the two tables. Identifying information, such as the unique id assigned to each new patient and last and first names are hidden behind this alias, and information that might be useful to a researcher such as age, height, and eye color can safely be accessed without the danger of introducing bias and keeping the study potentially double-blind. 
+
+*Note: All example patients were randomly generated and are not meant to resemble any real person*
