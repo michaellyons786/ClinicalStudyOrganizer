@@ -33,6 +33,14 @@ class Database:
         query = "SELECT * FROM identity WHERE alias = \'{a}\';".format(a=alias)
         return self._query_database(query)
 
+    def get_alias(self, id):
+        query = "SELECT alias FROM identity WHERE id = {i};".format(i=id)
+        return self._query_database(query)
+
+    def get_identity_attributes(self, id):
+        alias = self.get_alias(id)[0][0] # todo fix
+        return self.get_data(alias)
+
     def get_all_aliases(self):
         query = "SELECT alias FROM attributes;"
         return self._query_database(query)
@@ -41,6 +49,9 @@ class Database:
         query_string = qr.construct_all_attribute_values(attributes)
 
         return qrr.Query_Result(self._query_database(query_string), attributes)
+
+    def is_initialized(self):
+        return self._query_database("SELECT name FROM sqlite_master WHERE type='table' AND name='identity';")
 
     def _execute_SQL(self, commands):
         self._open()

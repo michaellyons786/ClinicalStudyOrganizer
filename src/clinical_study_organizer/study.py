@@ -6,17 +6,19 @@ from src.clinical_study_organizer.containers import patient as p
 
 
 class Study:
-    def __init__(self, attributes):
+    def __init__(self, attributes, database_location="../../database/patients.db"):
         self.attribute_dictionary = self._parse_attributes(attributes)
         self.database = None
+        self.database_location = database_location
         self.initialized = False
         self.anonymized = True
 
     def initialize(self):
-        self.database = db.Database("../../database/patients.db")
-        self.database.delete_tables()  # todo delete
-        self.database.initialize(self.attribute_dictionary)
+        self.database = db.Database(self.database_location)
+        if len(self.database.is_initialized()) != 0: # todo fix
+            self.delete_tables()
 
+        self.database.initialize(self.attribute_dictionary)
         self.initialized = True
 
     def add_patients(self, patients):
@@ -26,7 +28,23 @@ class Study:
     def get_data(self, alias):
         return self.database.get_data(alias)
 
+    def delete_tables(self):
+        self.database.delete_tables()
+
+    def get_alias(self, id):
+        if type(id) != 'str':
+            id = str(id)
+
+        return self.database.get_alias(id)
+
+    def get_identity_attributes(self, id):
+        if type(id) != 'str':
+            id = str(id)
+
+        return self.database.get_identity_attributes(id)
+
     def get_identity(self, alias):
+        self.anonymized = False
         return self.database.get_identity(alias)
 
     def get_all_aliases(self):
@@ -90,9 +108,11 @@ if __name__ == "__main__":
     study = Study(attributes)
     study.initialize()
 
-    patients = construct_patient_list(data)
+    patients = construct_patient_list(data, "C:\\Users\\Michael\\AnacondaProjects\\ClinicalStudyOrganizer\\test\\test_resources\\nounlist.txt")
     study.add_patients(patients)
     info = study.get_all_attribute_values(["age", "eye_color"])
+
+    study.delete_tables()
 
     # print(mean(info))
 
