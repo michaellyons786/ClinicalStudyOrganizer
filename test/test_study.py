@@ -42,16 +42,16 @@ def test_study(study):
 
     study.delete_tables()
 
-def get_database_location():
+@pytest.fixture
+def database_location():
     here = os.path.abspath(os.path.dirname(__file__))
     database_location = here + "/test_resources/test.db"
     return database_location
 
 
 @pytest.fixture
-def study():
-    database_location = get_database_location()
-    study = Study(attributes, database_location)
+def study(database_location, attributes, patients):
+    study = Study(attributes[0], database_location)
     study.initialize()
     study.add_patients(patients)
     return study
