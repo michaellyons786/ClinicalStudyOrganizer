@@ -1,7 +1,7 @@
 import csv
 import pickle
 
-from database import Database
+from src.clinical_study_organizer.database import Database
 
 
 class Study:

@@ -4,7 +4,6 @@ import pytest
 
 from src.clinical_study_organizer.containers.query import construct_patients_attributes, construct_patients_identities, get_initial_tables, \
     construct_all_attribute_values
-from src.clinical_study_organizer.containers import *
 from test.fixtures import *
 
 
