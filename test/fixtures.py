@@ -2,6 +2,7 @@ import pytest
 import sqlite3 as db
 import os
 from containers.data import read_patient_list, construct_patient_list, Data
+from containers.query import get_initial_tables
 from src.clinical_study_organizer.study import Study
 
 
@@ -45,9 +46,36 @@ def test_list():
 
 
 @pytest.fixture
-def database_cursor(database_location):
+def raw_database_cursor(database_location):
     connection = db.connect(database_location)
     cursor = connection.cursor()
+
+    existing_tables = cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='identity';").fetchall()
+
+    if len(existing_tables) != 0:
+        cursor.execute("DROP TABLE attributes;")
+        cursor.execute("DROP TABLE identity;")
+
+    yield cursor
+
+    connection.close()
+
+
+@pytest.fixture
+def constructed_database_cursor(database_location, data):
+    connection = db.connect(database_location)
+    cursor = connection.cursor()
+
+    existing_tables = cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='identity';").fetchall()
+
+    if len(existing_tables) != 0:
+        cursor.execute("DROP TABLE attributes;")
+        cursor.execute("DROP TABLE identity;")
+
+    attribute_table, identity_table = get_initial_tables(data.get_attribute_types())
+
+    cursor.execute(attribute_table)
+    cursor.execute(identity_table)
 
     yield cursor
 

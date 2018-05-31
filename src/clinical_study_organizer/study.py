@@ -8,7 +8,7 @@ from database import Database
 class Study:
     def __init__(self, data, database_location="../../database/patients.db"):
         self.attribute_types = data.get_attribute_types()
-        self.attribute_names = data.get_attribute_names()
+        self.attribute_names = data.get_alias_attribute_names()
         self.database = None
         self.database_location = database_location
         self.initialized = False

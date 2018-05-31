@@ -8,18 +8,30 @@ class Data():
         raw_attribute_names, data = read_patient_list(file_name)
         attribute_names, attribute_types = parse_attribute_names(raw_attribute_names)
 
-        self.attribute_names = attribute_names
+        self.identity_attribute_names = ['id', 'last_name', 'first_name']
+        self.alias_attribute_names = remove_id_names(attribute_names, self.identity_attribute_names)
         self.attribute_types = attribute_types
         self.patients = construct_patient_list(data, noun_list_location)
 
-    def get_attribute_names(self):
-        return self.attribute_names
+    def get_alias_attribute_names(self):
+        return self.alias_attribute_names
+
+    def get_identity_attribute_names(self):
+        return self.identity_attribute_names
 
     def get_attribute_types(self):
         return self.attribute_types
 
     def get_patients(self):
         return self.patients
+
+
+def remove_id_names(attribute_names, identity_names):
+
+    for id_name in identity_names:
+        attribute_names.remove(id_name)
+
+    return attribute_names
 
 
 def read_patient_list(file_name):

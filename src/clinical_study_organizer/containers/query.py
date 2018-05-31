@@ -16,6 +16,7 @@ def construct_patients_attributes(patients):
 
     return queries
 
+
 def construct_patients_identities(patients):
     queries = []
 
