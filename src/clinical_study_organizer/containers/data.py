@@ -1,6 +1,6 @@
 import csv
 
-from containers.patient import Patient
+from src.clinical_study_organizer.containers.patient import Patient
 
 
 class Data():
