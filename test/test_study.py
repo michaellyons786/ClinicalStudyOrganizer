@@ -4,21 +4,19 @@ import os
 import pytest
 
 
-def test_read_patient_list(attributes):
-    attribute_names = attributes[0]
-    data = attributes[1]
+def test_initialize(study, database_cursor):
+    study.initialize()
 
-    assert("Kolbe" in data[0])
-    assert("Maycock" in data[19])
-    assert("id;INT" in attribute_names[0])
-    assert("eye_color;VARCHAR" in attribute_names[5])
+    assert(study.initialized == True)
+    assert(database_cursor is not None)
 
-def test_construct_patient_list(patients):
 
-    assert (patients[0].first_name == "Cathi")
-    assert (patients[19].first_name == "Oretha")
-    assert (patients[0].id == '7698')
-    assert (patients[19].id == '5782')
+def test_add_patients(study, patients):
+    study.initialize()
+    study.add_patients(patients)
+
+    # todo add function to return all patients from study
+
 
 def test_study(study):
     query_result = study.get_all_attribute_values(["age", "eye_color"])
