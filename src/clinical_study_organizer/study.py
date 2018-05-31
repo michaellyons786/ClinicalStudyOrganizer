@@ -1,7 +1,6 @@
 import csv
 import pickle
 
-from containers.data import parse_attribute_names
 from database import Database
 
 
