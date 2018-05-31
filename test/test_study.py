@@ -1,4 +1,5 @@
 from src.clinical_study_organizer.study import *
+from test.fixtures import *
 import os
 import pytest
 
@@ -41,32 +42,3 @@ def test_study(study):
     assert(patient2_attributes[1] == patient2_indirect_attributes[0][3])
 
     study.delete_tables()
-
-@pytest.fixture
-def database_location():
-    here = os.path.abspath(os.path.dirname(__file__))
-    database_location = here + "/test_resources/test.db"
-    return database_location
-
-
-@pytest.fixture
-def study(database_location, attributes, patients):
-    study = Study(attributes[0], database_location)
-    study.initialize()
-    study.add_patients(patients)
-    return study
-
-
-@pytest.fixture
-def attributes():
-    here = os.path.abspath(os.path.dirname(__file__))
-    test_list = here + "/test_resources/sample_patient_list.csv"
-    return read_patient_list(test_list)
-
-
-@pytest.fixture
-def patients(attributes):
-    here = os.path.abspath(os.path.dirname(__file__))
-    noun_list = here + "/test_resources/nounlist.txt"
-    patients = construct_patient_list(attributes[1], noun_list)
-    return patients
