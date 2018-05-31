@@ -1,8 +1,8 @@
 import pytest
 import sqlite3 as db
 import os
-from containers.data import read_patient_list, construct_patient_list, Data
-from containers.query import get_initial_tables
+from src.clinical_study_organizer.containers.data import read_patient_list, construct_patient_list, Data
+from src.clinical_study_organizer.containers.query import get_initial_tables
 from src.clinical_study_organizer.study import Study
 
 
