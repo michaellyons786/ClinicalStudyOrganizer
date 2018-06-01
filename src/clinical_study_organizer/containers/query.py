@@ -57,8 +57,8 @@ def get_initial_tables(attribute_dictionary):
     return attribute_table, identity_table
 
 
-def construct_all_attribute_values(attributes):
-    return "SELECT alias, " + construct_attributes_select(attributes) + " FROM attributes;"
+def construct_all_attribute_values(attribute_names):
+    return "SELECT alias, " + construct_attributes_select(attribute_names) + " FROM attributes;"
 
 
 def construct_attribute_table(attribute_dictionary):
@@ -76,10 +76,10 @@ def construct_attribute_table(attribute_dictionary):
     return "".join(attribute_string_list)
 
 
-def construct_attributes_select(attributes):
+def construct_attributes_select(attribute_names):
     query = []
 
-    for attribute in attributes:
+    for attribute in attribute_names:
         line = attribute + ", "
         query.append(line)
 

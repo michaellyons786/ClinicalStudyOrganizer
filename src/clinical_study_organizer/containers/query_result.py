@@ -1,10 +1,10 @@
 
 class Query_Result:
-    def __init__(self, query_result, attributes, isIdentity=False):
+    def __init__(self, query_result, attribute_names, is_identity=False):
         self.key_attributes = {}
 
-        if not isIdentity:
-            self.attributes_names = attributes
+        if not is_identity:
+            self.attributes_names = attribute_names
             self._initialize(query_result)
 
     def _initialize(self, query_result):
@@ -13,6 +13,9 @@ class Query_Result:
             attributes = row[1:]
 
             self.key_attributes[alias] = attributes
+
+    def get_aliases(self):
+        return list(self.key_attributes.keys())
 
     def get_attributes(self, alias):
         return self.key_attributes[alias]

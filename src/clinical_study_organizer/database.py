@@ -45,10 +45,10 @@ class Database:
         query = "SELECT alias FROM attributes;"
         return self._query_database(query)
 
-    def get_all_attribute_values(self, attributes):
-        query_string = qr.construct_all_attribute_values(attributes)
+    def get_all_attribute_values(self, attribute_names):
+        query_string = qr.construct_all_attribute_values(attribute_names)
 
-        return qrr.Query_Result(self._query_database(query_string), attributes)
+        return qrr.Query_Result(self._query_database(query_string), attribute_names)
 
     def is_initialized(self):
         return self._query_database("SELECT name FROM sqlite_master WHERE type='table' AND name='identity';")

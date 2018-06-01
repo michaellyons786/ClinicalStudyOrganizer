@@ -50,8 +50,8 @@ class Study:
     def get_all_aliases(self):
         return self.database.get_all_aliases()
 
-    def get_all_attribute_values(self, attributes):
-        return self.database.get_all_attribute_values(attributes)
+    def get_all_attribute_values(self, attribute_names):
+        return self.database.get_all_attribute_values(attribute_names)
 
     @staticmethod
     def load(file_name):

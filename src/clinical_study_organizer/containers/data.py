@@ -43,15 +43,15 @@ def read_patient_list(file_name):
             csv_data.append(row)
 
     raw_attribute_names = csv_data[0]
-    data = csv_data[1:]
+    raw_data = csv_data[1:]
 
-    return raw_attribute_names, data
+    return raw_attribute_names, raw_data
 
 
-def construct_patient_list(patients, noun_list):
+def construct_patient_list(raw_data, noun_list):
     patient_list = []
 
-    for row in patients:
+    for row in raw_data:
         id = row[0]
         last_name = row[1]
         first_name = row[2]
@@ -62,15 +62,15 @@ def construct_patient_list(patients, noun_list):
     return patient_list
 
 
-def parse_attribute_names(raw_attribute_names):
+def parse_attribute_names(raw_names_and_data):
     attribute_types = {}
     attribute_names = []
 
-    for attribute in raw_attribute_names:
-        attribute = attribute.split(';')
-        attribute_name = attribute[0]
+    for row in raw_names_and_data:
+        row = row.split(';')
+        attribute_name = row[0]
         attribute_names.append(attribute_name)
-        attribute_type = attribute[1]
+        attribute_type = row[1]
 
         attribute_types[attribute_name] = attribute_type
 
