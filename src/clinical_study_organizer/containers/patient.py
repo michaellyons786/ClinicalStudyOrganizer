@@ -10,13 +10,8 @@ class Patient:
         self.alias = self.get_alias(noun_list)
 
     def get_alias(self, noun_list):
-        file = open(noun_list)
-        words = []
-        for line in file:
-            words.append(line)
-
-        first_word = random.choice(words).replace('\n', '')
-        second_word = ensure_no_duplicate_noun(first_word, words)
+        first_word = random.choice(noun_list)
+        second_word = ensure_no_duplicate_noun(first_word, noun_list)
 
         return first_word + '_' + second_word
 

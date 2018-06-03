@@ -48,8 +48,9 @@ def read_patient_list(file_name):
     return raw_attribute_names, raw_data
 
 
-def construct_patient_list(raw_data, noun_list):
+def construct_patient_list(raw_data, noun_list_location):
     patient_list = []
+    noun_list = construct_noun_list(noun_list_location)
 
     for row in raw_data:
         id = row[0]
@@ -75,3 +76,13 @@ def parse_attribute_names(raw_names_and_data):
         attribute_types[attribute_name] = attribute_type
 
     return attribute_names, attribute_types
+
+
+def construct_noun_list(noun_list_location):
+    file = open(noun_list_location)
+    noun_list = []
+
+    for row in file:
+        noun_list.append(row.replace("\n", ""))
+
+    return noun_list
