@@ -16,8 +16,8 @@ def study(database_location, data):
 
 
 @pytest.fixture
-def data(test_list, noun_list):
-    return Data(test_list, noun_list)
+def data(test_list, noun_list_location):
+    return Data(test_list, noun_list_location)
 
 
 @pytest.fixture
@@ -26,8 +26,8 @@ def raw_names_and_data(test_list):
 
 
 @pytest.fixture
-def patients(raw_names_and_data, noun_list):
-    return construct_patient_list(raw_names_and_data[1], noun_list)
+def patients(raw_names_and_data, noun_list_location):
+    return construct_patient_list(raw_names_and_data[1], noun_list_location)
 
 
 @pytest.fixture
@@ -37,7 +37,7 @@ def database_location():
 
 
 @pytest.fixture
-def noun_list():
+def noun_list_location():
     here = os.path.abspath(os.path.dirname(__file__))
     return  here + "/test_resources/nounlist.txt"
 

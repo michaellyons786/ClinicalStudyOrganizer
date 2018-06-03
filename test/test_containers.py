@@ -9,26 +9,10 @@ from src.clinical_study_organizer.containers.query import construct_patients_att
     get_initial_tables, \
     construct_all_attribute_values, remove_last_comma
 from test.fixtures import *
+from src.clinical_study_organizer.containers.data import construct_noun_list, parse_attribute_names, remove_id_names
 
 
 # ----------------------QUERY-------------------------------
-def test_read_patient_list(raw_names_and_data):
-    attribute_names = raw_names_and_data[0]
-    data = raw_names_and_data[1]
-
-    assert ("Kolbe" in data[0])
-    assert ("Maycock" in data[19])
-    assert ("id;INT" in attribute_names[0])
-    assert ("eye_color;VARCHAR" in attribute_names[5])
-
-
-def test_construct_patient_list(patients):
-    assert (patients[0].first_name == "Cathi")
-    assert (patients[19].first_name == "Oretha")
-    assert (patients[0].id == '7698')
-    assert (patients[19].id == '5782')
-
-
 def test_construct_patients_attributes(patients, constructed_database_cursor):
     queries = construct_patients_attributes(patients)
 
@@ -123,5 +107,57 @@ def test_patient():
 
 
 # ----------------------DATA-------------------------------
+def test_data(data):
+    assert(data.identity_attribute_names[0] == "id")
+    assert(data.alias_attribute_names[0] == "age")
+    assert(data.attribute_types["id"] == "INT")
+    assert(data.patients[0].id == "7698")
+
+
+def test_construct_noun_list(noun_list_location):
+    nouns = construct_noun_list(noun_list_location)
+
+    assert(type(nouns) == list)
+    assert(len(nouns) == 4551)
+
+
+def test_parse_attribute_names(raw_names_and_data):
+    raw_names = raw_names_and_data[0]
+    attribute_names, attribute_types = parse_attribute_names(raw_names)
+
+    assert(attribute_names[0] == "id")
+    assert(attribute_names[5] == "eye_color")
+    assert(attribute_types["id"] == "INT")
+    assert(attribute_types["eye_color"] == "VARCHAR")
+
+
+def test_construct_patient_list(patients):
+    assert (patients[0].first_name == "Cathi")
+    assert (patients[19].first_name == "Oretha")
+    assert (patients[0].id == '7698')
+    assert (patients[19].id == '5782')
+
+
+def test_read_patient_list(raw_names_and_data):
+    attribute_names = raw_names_and_data[0]
+    data = raw_names_and_data[1]
+
+    assert ("Kolbe" in data[0])
+    assert ("Maycock" in data[19])
+    assert ("id;INT" in attribute_names[0])
+    assert ("eye_color;VARCHAR" in attribute_names[5])
+
+
+def test_remove_id_names(raw_names_and_data):
+    attribute_names, _ = parse_attribute_names(raw_names_and_data[0])
+    ids = ["id", "last_name", "first_name"]
+    attribute_names = remove_id_names(attribute_names, ids)
+
+    assert("id" not in attribute_names)
+    assert("last_name" not in attribute_names)
+    assert("first_name" not in attribute_names)
+    assert(len(attribute_names) != 0)
+
+
 
 

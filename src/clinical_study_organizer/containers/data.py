@@ -63,11 +63,11 @@ def construct_patient_list(raw_data, noun_list_location):
     return patient_list
 
 
-def parse_attribute_names(raw_names_and_data):
+def parse_attribute_names(raw_names):
     attribute_types = {}
     attribute_names = []
 
-    for row in raw_names_and_data:
+    for row in raw_names:
         row = row.split(';')
         attribute_name = row[0]
         attribute_names.append(attribute_name)
