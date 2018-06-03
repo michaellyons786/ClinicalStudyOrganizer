@@ -3,6 +3,7 @@ from sqlite3 import OperationalError
 import pytest
 import random
 
+from src.clinical_study_organizer.containers.patient import get_unique_second_word, get_alias, Patient
 from src.clinical_study_organizer.containers.query_result import Query_Result
 from src.clinical_study_organizer.containers.query import construct_patients_attributes, construct_patients_identities, \
     get_initial_tables, \
@@ -10,6 +11,7 @@ from src.clinical_study_organizer.containers.query import construct_patients_att
 from test.fixtures import *
 
 
+# ----------------------QUERY-------------------------------
 def test_read_patient_list(raw_names_and_data):
     attribute_names = raw_names_and_data[0]
     data = raw_names_and_data[1]
@@ -75,6 +77,7 @@ def test_remove_last_comma():
     assert(example == ["abba, ", "dabba, ", "bobabba "])
 
 
+# ----------------------QUERY_RESULT-------------------------------
 def test_query_result_get_aliases(query_result):
     aliases = query_result.get_aliases()
 
@@ -91,6 +94,34 @@ def test_query_result_get_attributes(query_result):
     assert(len(all_attributes) != 0)
 
 
+# ----------------------PATIENT-------------------------------
+def test_get_unique_second_word():
+    test_words = ['abba', 'babba', 'cabba']
+    first_word = random.choice(test_words)
 
+    for _ in range(100):
+        second_word = get_unique_second_word(first_word, test_words)
+        assert(first_word != second_word)
+
+
+def test_get_alias():
+    test_words = ['abba', 'babba', 'cabba']
+
+    alias = get_alias(test_words)
+    assert(len(alias) != 0)
+    assert(test_words[0] in alias or test_words[1] in alias or test_words[2] in alias)
+
+
+def test_patient():
+    patient = Patient(32, "johnson", "john", [3, 4, 5], ["ab", "ba"])
+
+    assert(patient.id == 32)
+    assert(patient.last_name == "johnson")
+    assert(patient.first_name == "john")
+    assert(patient.data == [3, 4, 5])
+    assert("ab" in patient.alias and "ba" in patient.alias)
+
+
+# ----------------------DATA-------------------------------
 
 
