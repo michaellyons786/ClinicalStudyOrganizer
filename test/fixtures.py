@@ -2,6 +2,7 @@ import pytest
 import sqlite3 as db
 import os
 
+from src.clinical_study_organizer.database import Database
 from src.clinical_study_organizer.containers.query_result import Query_Result
 from src.clinical_study_organizer.containers.data import read_patient_list, construct_patient_list, Data
 from src.clinical_study_organizer.containers.query import get_initial_tables, construct_patients_attributes, \
@@ -28,6 +29,15 @@ def raw_names_and_data(test_list):
 @pytest.fixture
 def patients(raw_names_and_data, noun_list_location):
     return construct_patient_list(raw_names_and_data[1], noun_list_location)
+
+
+@pytest.fixture
+def database(database_location):
+    database = Database(database_location)
+    if database.is_initialized():
+        database.delete_tables()
+
+    return database
 
 
 @pytest.fixture
@@ -69,10 +79,8 @@ def populated_database_cursor(constructed_database_cursor, patients):
     patients_queries = construct_patients_attributes(patients)
     aliases_queries = construct_patients_identities(patients)
 
-
     execute_SQL_commands(patients_queries, constructed_database_cursor)
     execute_SQL_commands(aliases_queries, constructed_database_cursor)
-
 
     return constructed_database_cursor
 

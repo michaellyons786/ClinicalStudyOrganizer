@@ -3554,7 +3554,6 @@ set
 setting
 settler
 sewer
-sex
 shack
 shade
 shadow
