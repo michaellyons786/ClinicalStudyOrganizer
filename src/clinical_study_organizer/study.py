@@ -22,8 +22,7 @@ class Study:
         self.initialized = True
 
     def add_patients(self, patients):
-        self.database.add_patients_attributes(patients)
-        self.database.add_patients_identities(patients)
+        self.database.add_patients(patients)
 
     def get_data(self, alias):
         return self.database.get_data(alias)

@@ -19,12 +19,9 @@ class Database:
     def delete_tables(self):
         self._execute_SQL(["DROP TABLE attributes;", "DROP TABLE identity;"])
 
-    def add_patients_attributes(self, patients):
+    def add_patients(self, patients):
         self._execute_SQL(construct_patients_attributes(patients))
-
-    def add_patients_identities(self, patients):
-        queries = construct_patients_identities(patients)
-        self._execute_SQL(queries)
+        self._execute_SQL(construct_patients_identities(patients))
 
     def get_data(self, alias):
         query = "SELECT * FROM attributes WHERE alias = \'{a}\';".format(a=alias)

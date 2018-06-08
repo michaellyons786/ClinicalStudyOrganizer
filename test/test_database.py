@@ -15,22 +15,15 @@ def test_database_delete_tables(database, raw_database_cursor, data):
     assert(len(tables) == 0)
 
 
-def test_database_add_patients_attributes(database, patients, raw_database_cursor, data):
+def test_database_add_patients(database, patients, raw_database_cursor, data):
     database.initialize(data.get_attribute_types())
-    database.add_patients_attributes(patients)
+    database.add_patients(patients)
 
     alias_list = raw_database_cursor.execute("SELECT * FROM attributes").fetchall()
+    identity_list = raw_database_cursor.execute("SELECT * FROM identity").fetchall()
+
 
     assert(alias_list[0][3] == 'brown')
     assert(alias_list[19][2] == 179)
-
-
-def test_database_add_patients_identities(database, patients, raw_database_cursor, data):
-    database.initialize(data.get_attribute_types())
-    database.add_patients_identities(patients)
-
-    identity_list = raw_database_cursor.execute("SELECT * FROM identity").fetchall()
-
     assert (identity_list[0][1] == 7698)
     assert (identity_list[19][3] == "Oretha")
-
