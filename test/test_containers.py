@@ -62,13 +62,7 @@ def test_remove_last_comma():
 
 
 # ----------------------QUERY_RESULT-------------------------------
-def test_query_result_get_aliases(query_result):
-    aliases = query_result.get_aliases()
-
-    assert(len(aliases) != 0)
-
-
-def test_query_result_get_attributes(query_result):
+def test_query_result_get(query_result):
 
     aliases = query_result.get_aliases()
     alias = random.choice(aliases)

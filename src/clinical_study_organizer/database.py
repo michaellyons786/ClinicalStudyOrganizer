@@ -23,30 +23,43 @@ class Database:
         self._execute_SQL(construct_patients_attributes(patients))
         self._execute_SQL(construct_patients_identities(patients))
 
-    def get_data(self, alias):
+    def get_alias_data(self, alias): # todo throw error for no results found
         query = "SELECT * FROM attributes WHERE alias = \'{a}\';".format(a=alias)
-        return self._query_database(query)
+        result = list(self._query_database(query)[0])
 
-    def get_identity(self, alias):
+        return result
+
+    def get_alias_identity(self, alias):
         query = "SELECT * FROM identity WHERE alias = \'{a}\';".format(a=alias)
-        return self._query_database(query)
+        result = list(self._query_database(query)[0])
+
+        return result
 
     def get_alias(self, id):
         query = "SELECT alias FROM identity WHERE id = {i};".format(i=id)
-        return self._query_database(query)
+        result = self._query_database(query)[0][0]
+
+        return result
 
     def get_identity_attributes(self, id):
-        alias = self.get_alias(id)[0][0] # todo fix
-        return self.get_data(alias)
+        alias = self.get_alias(id)
+
+        return self.get_alias_data(alias)
 
     def get_all_aliases(self):
         query = "SELECT alias FROM attributes;"
-        return self._query_database(query)
+        aliases = []
+        results = self._query_database(query)
+
+        for row in results: # todo more elegant solution?
+            aliases.append(row[0])
+
+        return aliases
 
     def get_all_attribute_values(self, attribute_names):
         query_string = construct_all_attribute_values(attribute_names)
 
-        return Query_Result(self._query_database(query_string), attribute_names)
+        return Query_Result(self._query_database(query_string))
 
     def is_initialized(self):
         results = self._query_database("SELECT name FROM sqlite_master WHERE type='table' AND name='identity';")

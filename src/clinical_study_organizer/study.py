@@ -25,7 +25,7 @@ class Study:
         self.database.add_patients(patients)
 
     def get_data(self, alias):
-        return self.database.get_data(alias)
+        return self.database.get_alias_data(alias)
 
     def delete_tables(self):
         self.database.delete_tables()
@@ -44,7 +44,7 @@ class Study:
 
     def get_identity(self, alias):
         self.anonymized = False
-        return self.database.get_identity(alias)
+        return self.database.get_alias_identity(alias)
 
     def get_all_aliases(self):
         return self.database.get_all_aliases()

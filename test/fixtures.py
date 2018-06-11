@@ -90,7 +90,7 @@ def query_result(data, populated_database_cursor):
     query = construct_all_attribute_values(data.get_alias_attribute_names())
     result = populated_database_cursor.execute(query).fetchall()
 
-    return Query_Result(result, data.get_alias_attribute_names)
+    return Query_Result(result)
 
 
 @pytest.fixture
