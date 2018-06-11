@@ -7,26 +7,23 @@ class Patient:
         self.last_name = last_name
         self.id = id
         self.data = data
-        self.alias = self.get_alias(noun_list)
-
-    def get_alias(self, noun_list):
-        file = open(noun_list)
-        words = []
-        for line in file:
-            words.append(line)
-
-        first_word = random.choice(words).replace('\n', '')
-        second_word = ensure_no_duplicate_noun(first_word, words)
-
-        return first_word + '_' + second_word
+        self.alias = get_alias(noun_list)
 
     def __repr__(self):
         return self.id + " " + self.first_name + " " + self.last_name
 
 
-def ensure_no_duplicate_noun(first_word, words):
-    second_word = random.choice(words).replace('\n', '')
+def get_unique_second_word(first_word, words):
+    second_word = random.choice(words)
 
     while second_word == first_word:
-        second_word = random.choice(words).replace('\n', '')
+        second_word = random.choice(words)
+
     return second_word
+
+
+def get_alias(noun_list):
+    first_word = random.choice(noun_list)
+    second_word = get_unique_second_word(first_word, noun_list)
+
+    return first_word + '_' + second_word

@@ -9,10 +9,3 @@ def test_initialize(study, raw_database_cursor):
 
     assert(study.initialized == True)
     assert(raw_database_cursor is not None)
-
-
-def test_add_patients(study, patients):
-    study.initialize()
-    study.add_patients(patients)
-
-    # todo add function to return all patients from study

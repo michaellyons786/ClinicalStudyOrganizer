@@ -1,8 +1,12 @@
 import pytest
 import sqlite3 as db
 import os
+
+from src.clinical_study_organizer.database import Database
+from src.clinical_study_organizer.containers.query_result import Query_Result
 from src.clinical_study_organizer.containers.data import read_patient_list, construct_patient_list, Data
-from src.clinical_study_organizer.containers.query import get_initial_tables
+from src.clinical_study_organizer.containers.query import get_initial_tables, construct_patients_attributes, \
+    construct_patients_identities, construct_all_attribute_values
 from src.clinical_study_organizer.study import Study
 
 
@@ -13,18 +17,27 @@ def study(database_location, data):
 
 
 @pytest.fixture
-def data(test_list, noun_list):
-    return Data(test_list, noun_list)
+def data(test_list, noun_list_location):
+    return Data(test_list, noun_list_location)
 
 
 @pytest.fixture
-def attributes(test_list):
+def raw_names_and_data(test_list):
     return read_patient_list(test_list)
 
 
 @pytest.fixture
-def patients(attributes, noun_list):
-    return construct_patient_list(attributes[1], noun_list)
+def patients(raw_names_and_data, noun_list_location):
+    return construct_patient_list(raw_names_and_data[1], noun_list_location)
+
+
+@pytest.fixture
+def database(database_location):
+    database = Database(database_location)
+    if database.is_initialized():
+        database.delete_tables()
+
+    return database
 
 
 @pytest.fixture
@@ -34,7 +47,7 @@ def database_location():
 
 
 @pytest.fixture
-def noun_list():
+def noun_list_location():
     here = os.path.abspath(os.path.dirname(__file__))
     return  here + "/test_resources/nounlist.txt"
 
@@ -62,6 +75,25 @@ def raw_database_cursor(database_location):
 
 
 @pytest.fixture
+def populated_database_cursor(constructed_database_cursor, patients):
+    patients_queries = construct_patients_attributes(patients)
+    aliases_queries = construct_patients_identities(patients)
+
+    execute_SQL_commands(patients_queries, constructed_database_cursor)
+    execute_SQL_commands(aliases_queries, constructed_database_cursor)
+
+    return constructed_database_cursor
+
+
+@pytest.fixture
+def query_result(data, populated_database_cursor):
+    query = construct_all_attribute_values(data.get_alias_attribute_names())
+    result = populated_database_cursor.execute(query).fetchall()
+
+    return Query_Result(result)
+
+
+@pytest.fixture
 def constructed_database_cursor(database_location, data):
     connection = db.connect(database_location)
     cursor = connection.cursor()
@@ -80,3 +112,9 @@ def constructed_database_cursor(database_location, data):
     yield cursor
 
     connection.close()
+
+
+def execute_SQL_commands(queries, cursor):
+    for query in queries:
+        cursor.execute(query)
+
