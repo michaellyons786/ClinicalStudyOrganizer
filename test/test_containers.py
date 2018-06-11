@@ -63,11 +63,12 @@ def test_remove_last_comma():
 
 # ----------------------QUERY_RESULT-------------------------------
 def test_query_result_get(query_result):
+    # todo make more robust
 
-    aliases = query_result.get_aliases()
+    aliases = list(query_result.key_values.keys())
     alias = random.choice(aliases)
 
-    all_attributes = query_result.get_attributes(alias)
+    all_attributes = query_result.get(alias)
 
     assert(len(all_attributes) != 0)
 
@@ -112,7 +113,7 @@ def test_construct_noun_list(noun_list_location):
     nouns = construct_noun_list(noun_list_location)
 
     assert(type(nouns) == list)
-    assert(len(nouns) == 4551)
+    assert(len(nouns) == 4550)
 
 
 def test_parse_attribute_names(raw_names_and_data):
